@@ -21,8 +21,8 @@ import AcademicCalendar from './pages/AcademicCalendar';
 
 const SECTION_META = {
   dashboard: { title: 'Dashboard', subtitle: 'Welcome back' },
-  courses: { title: 'Course Registration', subtitle: 'Manage your course enrollments' },
-  exams: { title: 'Exam Registration', subtitle: 'Book and track your exam slots' },
+  courses: { title: 'Course Management', subtitle: 'Manage your courses' },
+  exams: { title: 'Exam Management', subtitle: 'Manage your courses registered for exams' },
   wallet: { title: 'Wallet', subtitle: 'Fund your wallet and review transactions' },
   profile: { title: 'Profile', subtitle: 'Your personal and academic details' },
   schedules: { title: 'Schedules', subtitle: 'Timetables and exam schedules' },
