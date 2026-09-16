@@ -24,7 +24,7 @@ const STATUS_TONE = {
 
 // Only courses in these statuses can still be dropped — a standard "add/drop
 // period" rule: once a course is Completed (past semester), it's locked.
-const DROPPABLE_STATUSES = ['Enrolled', 'Pending Approval'];
+const DROPPABLE_STATUSES = ['Registered', 'Pending Approval'];
 
 function courseColumns({ onDropClick }) {
   return [
