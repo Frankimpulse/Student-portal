@@ -38,8 +38,8 @@ function PortalContent() {
   const [semesterStatus, setSemesterStatus] = useState('not_registered');
   const [toast, setToast] = useState(null);
   const [registeredCourses, setRegisteredCourses] = useState([
-    { id: 1, code: 'CSC 402', title: 'Distributed Systems', units: 3, year: '2025/2026', semester: 'First', status: 'Enrolled' },
-    { id: 2, code: 'CSC 415', title: 'Machine Learning', units: 3, year: '2025/2026', semester: 'First', status: 'Enrolled' },
+    { id: 1, code: 'CSC 402', title: 'Distributed Systems', units: 3, year: '2025/2026', semester: 'First', status: 'Registered' },
+    { id: 2, code: 'CSC 415', title: 'Machine Learning', units: 3, year: '2025/2026', semester: 'First', status: 'Registered' },
   ]);
 
   const [activity, setActivity] = useState([
