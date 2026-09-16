@@ -13,7 +13,7 @@ export default function Dashboard({
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard label="Registered Courses" value={String(registeredCoursesCount)} hint="This semester" icon={BookOpen} tone="ink" />
-        <StatCard label="Exams Registered" value={String(examsScheduledCount)} hint="Booked so far" icon={ClipboardCheck} tone="brass" />
+        <StatCard label="Exams Registered" value={String(examsScheduledCount)} hint="Registered so far" icon={ClipboardCheck} tone="brass" />
         <StatCard label="Wallet Balance" value={`₦${walletBalance.toLocaleString()}`} hint="Available balance" icon={Wallet} tone="forest" />
         <StatCard label="CGPA" value="4.32" hint="As of last semester" icon={GraduationCap} tone="ink" />
       </div>
