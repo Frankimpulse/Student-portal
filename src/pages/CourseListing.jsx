@@ -15,7 +15,7 @@ const PAST_COURSES = [
 ];
 
 const STATUS_TONE = {
-  Enrolled: 'success',
+  Registered: 'success',
   'Pending Approval': 'pending',
   'Not Registered': 'neutral',
   Completed: 'brass',
