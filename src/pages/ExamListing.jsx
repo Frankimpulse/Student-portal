@@ -1,13 +1,15 @@
 "use client";
 
 import { useState, useMemo } from 'react';
+import { ClipboardCheck, ClipboardList, CalendarClock } from 'lucide-react';
 import Table from '../components/ui/Table';
 import Badge from '../components/ui/Badge';
 import Button from '../components/ui/Button';
 import Select from '../components/ui/Select';
 import Tabs from '../components/ui/Tabs';
+import StatCard from '../components/ui/StatCard';
+import PageBanner from '../components/ui/PageBanner';
 
-// Past-semester history only — current semester comes from the `exams` prop instead.
 const PAST_EXAMS = [
   { id: 'p1', code: 'CSC 301', title: 'Operating Systems', year: '2024/2025', semester: 'Second', status: 'Completed' },
   { id: 'p2', code: 'MTH 201', title: 'Linear Algebra', year: '2024/2025', semester: 'First', status: 'Completed' },
@@ -41,6 +43,14 @@ export default function ExamListing({ exams = [], onRegister }) {
 
   return (
     <div className="space-y-4">
+      <PageBanner eyebrow="Academic Records" title="Exam Management" subtitle="Register for and track your semester examinations." bgImage="/exams-bg.jpg" compact />
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <StatCard label="Exams Registered" value={String(exams.length)} icon={ClipboardCheck} tone="ink" />
+        <StatCard label="Total History" value={String(PAST_EXAMS.length + exams.length)} hint="Across all semesters" icon={ClipboardList} tone="brass" />
+        <StatCard label="Next Deadline" value="Aug 15" hint="Exam registration closes" icon={CalendarClock} tone="amber" />
+      </div>
+
       <div className="flex items-center justify-between flex-wrap gap-3">
         <Tabs
           tabs={[{ key: 'current', label: 'Current Semester' }, { key: 'timeline', label: 'Timeline' }]}
@@ -57,7 +67,7 @@ export default function ExamListing({ exams = [], onRegister }) {
       <Table
         columns={examColumns()}
         rows={filtered}
-        emptyMessage="No exams match this filter. Check the Exam Schedule page (under Schedules) for dates, times and venues."
+        emptyMessage="No exams match this filter. Check the Exam Schedule page (under Schedules) for dates and times."
       />
     </div>
   );

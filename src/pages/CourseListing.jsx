@@ -18,8 +18,8 @@ const STATUS_TONE = {
   'Registered': 'success',
   'Pending Approval': 'pending',
   'Not Registered': 'neutral',
-  Completed: 'brass',
-  Rejected: 'danger',
+  'Completed': 'brass',
+  'Rejected': 'danger',
 };
 
 // Only courses in these statuses can still be dropped — a standard "add/drop

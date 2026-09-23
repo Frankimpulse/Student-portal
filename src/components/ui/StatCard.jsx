@@ -1,5 +1,7 @@
 import Card from './Card';
 
+const TONE_BG = { ink: 'bg-ink text-text-on-ink', brass: 'bg-brass text-text-on-ink', forest: 'bg-forest text-text-on-ink', oxblood: 'bg-oxblood text-text-on-ink', amber: 'bg-amber text-text-on-ink' };
+
 export default function StatCard({ label, value, hint, icon: Icon, tone = 'ink' }) {
   const toneClass = { ink: 'text-ink', brass: 'text-brass', forest: 'text-forest', oxblood: 'text-oxblood', amber: 'text-amber' }[tone];
 
@@ -11,7 +13,7 @@ export default function StatCard({ label, value, hint, icon: Icon, tone = 'ink' 
         {hint && <p className="text-xs text-text-secondary mt-1">{hint}</p>}
       </div>
       {Icon && (
-        <div className={`p-2 rounded-md bg-surface-raised ${toneClass}`}>
+        <div className={`w-10 h-10 rounded-full flex items-center justify-center ${TONE_BG[tone]}`}>
           <Icon size={18} />
         </div>
       )}

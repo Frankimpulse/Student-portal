@@ -1,56 +1,56 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --bg: #F3F5F9;
+  --bg: #F5FBF7;
   --surface: #FFFFFF;
-  --surface-raised: #F7F8FB;
-  --border: #E7EAF1;
-  --border-strong: #D3D8E3;
+  --surface-raised: #EAF6EE;
+  --border: #D3E8D9;
+  --border-strong: #AFD3BB;
 
-  --ink: #111827;
-  --ink-soft: #374151;
+  --ink: #166B3F;
+  --ink-soft: #1F8A52;
 
-  --brass: #2F6FED;
-  --brass-soft: #E8F0FF;
+  --brass: #2FA360;
+  --brass-soft: #E1F5E8;
 
-  --forest: #16A34A;
-  --forest-soft: #E3F6E9;
-  --oxblood: #EF4444;
-  --oxblood-soft: #FDE8E8;
-  --amber: #D97706;
-  --amber-soft: #FCEFD9;
+  --forest: #2E9E52;
+  --forest-soft: #E1F4E6;
+  --oxblood: #C0392B;
+  --oxblood-soft: #FBE4E1;
+  --amber: #C77B12;
+  --amber-soft: #F6E7D2;
 
-  --text-primary: #111827;
-  --text-secondary: #6B7280;
+  --text-primary: #142A1D;
+  --text-secondary: #5B6F60;
   --text-on-ink: #FFFFFF;
 }
 
 .dark {
-  --bg: #0B0F19;
-  --surface: #131826;
-  --surface-raised: #1A2032;
-  --border: #262E42;
-  --border-strong: #38415A;
+  --bg: #0D1210;
+  --surface: #141A17;
+  --surface-raised: #1B231F;
+  --border: #263029;
+  --border-strong: #37453C;
 
-  --ink: #F3F4F6;
-  --ink-soft: #CBD2E1;
+  --ink: #4ADE80;
+  --ink-soft: #6EE7A0;
 
-  --brass: #4C86FF;
-  --brass-soft: #16213D;
+  --brass: #4ADE80;
+  --brass-soft: #163524;
 
   --forest: #4ADE80;
-  --forest-soft: #12301F;
+  --forest-soft: #14301F;
   --oxblood: #F87171;
-  --oxblood-soft: #351616;
+  --oxblood-soft: #351615;
   --amber: #FBBF24;
-  --amber-soft: #352A0E;
+  --amber-soft: #332A10;
 
-  --text-primary: #F3F4F6;
-  --text-secondary: #9CA3AF;
-  --text-on-ink: #0B0F19;
+  --text-primary: #EAF4EC;
+  --text-secondary: #90A497;
+  --text-on-ink: #0D1210;
 }
 
 @theme inline {
@@ -73,7 +73,7 @@
   --color-text-secondary: var(--text-secondary);
   --color-text-on-ink: var(--text-on-ink);
 
-  --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Playfair Display', ui-serif, Georgia, serif;
   --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 }
@@ -91,5 +91,19 @@ body {
 }
 
 .card-shadow {
-  box-shadow: 0 1px 2px rgba(17, 24, 39, 0.04), 0 4px 16px rgba(17, 24, 39, 0.06);
+  box-shadow: 0 1px 2px rgba(20, 42, 29, 0.05), 0 8px 24px rgba(20, 42, 29, 0.07);
+}
+
+.hero-texture {
+  background-image: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.12), transparent 45%),
+    radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08), transparent 50%);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.hero-bg-fade {
+  animation: fadeIn 1.2s ease-out;
 }

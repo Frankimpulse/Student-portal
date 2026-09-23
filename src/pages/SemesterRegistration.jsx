@@ -4,8 +4,23 @@ import { useState } from 'react';
 import Card, { CardHeader } from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
+import Select from '../components/ui/Select';
 
-const REGISTRATION_FEE = 20000;
+const FEE_BREAKDOWN = [
+  { label: 'Tuition Fee', amount: 12000 },
+  { label: 'ICT / E-Portal Fee', amount: 3000 },
+  { label: 'Library Fee', amount: 2000 },
+  { label: 'Medical & Insurance Fee', amount: 2000 },
+  { label: 'Study Center / Facilitation Fee', amount: 1000 },
+];
+const REGISTRATION_FEE = FEE_BREAKDOWN.reduce((sum, f) => sum + f.amount, 0); // ₦20,000
+
+const PAYMENT_METHODS = [
+  { value: 'wallet', label: 'Wallet Balance' },
+  { value: 'card', label: 'Debit / Credit Card' },
+  { value: 'transfer', label: 'Bank Transfer' },
+  { value: 'ussd', label: 'USSD' },
+];
 
 export default function SemesterRegistration({
   session,
@@ -18,14 +33,18 @@ export default function SemesterRegistration({
   onCancel,
 }) {
   const [agreed, setAgreed] = useState(false);
+  const [method, setMethod] = useState('wallet');
   const [phase, setPhase] = useState('form'); // 'form' | 'success'
 
-  const canAfford = walletBalance >= REGISTRATION_FEE;
+  const isWallet = method === 'wallet';
+  const canAffordWallet = walletBalance >= REGISTRATION_FEE;
+  const canSubmit = agreed && (!isWallet || canAffordWallet);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!agreed || !canAfford) return;
-    onSubmit?.({ fee: REGISTRATION_FEE });
+    if (!canSubmit) return;
+    const methodLabel = PAYMENT_METHODS.find((m) => m.value === method)?.label;
+    onSubmit?.({ fee: REGISTRATION_FEE, method, methodLabel, paidFromWallet: isWallet });
     setPhase('success');
   };
 
@@ -43,32 +62,20 @@ export default function SemesterRegistration({
             <span className="ledger-num text-text-primary">{level}</span>
           </div>
           <div className="flex justify-between px-4 py-3">
-            <span className="text-text-secondary">Registration Fee Paid</span>
+            <span className="text-text-secondary">Amount Paid</span>
             <span className="ledger-num text-text-primary">₦{REGISTRATION_FEE.toLocaleString()}</span>
+          </div>
+          <div className="flex justify-between px-4 py-3">
+            <span className="text-text-secondary">Payment Method</span>
+            <span className="text-text-primary">{PAYMENT_METHODS.find((m) => m.value === method)?.label}</span>
           </div>
         </div>
         <p className="text-sm text-text-secondary mb-4">
-          You can now proceed to register your courses and book exam slots for this semester.
+          You can now proceed to register your courses and register for exams for this semester.
         </p>
         <div className="flex justify-end gap-2">
           <Button variant="outline" onClick={() => window.print()}>Print Confirmation</Button>
           <Button variant="primary" onClick={() => onDone?.()}>Continue</Button>
-        </div>
-      </Card>
-    );
-  }
-
-  if (!canAfford) {
-    return (
-      <Card className="max-w-lg mx-auto text-center py-10">
-        <CardHeader title="Insufficient Wallet Balance" subtitle="Registration fee required" action={<Badge tone="danger">₦{REGISTRATION_FEE.toLocaleString()} Required</Badge>} />
-        <p className="text-sm text-text-secondary mb-4">
-          Semester registration requires a fee of <span className="ledger-num">₦{REGISTRATION_FEE.toLocaleString()}</span>.
-          Your current wallet balance is <span className="ledger-num">₦{walletBalance.toLocaleString()}</span> — please fund your wallet before continuing.
-        </p>
-        <div className="flex justify-center gap-2">
-          <Button variant="ghost" onClick={onCancel}>Back</Button>
-          <Button variant="brass" onClick={onFundWallet}>Fund Wallet</Button>
         </div>
       </Card>
     );
@@ -81,29 +88,44 @@ export default function SemesterRegistration({
         subtitle="Complete this step to unlock course and exam registration"
         action={<Badge tone="brass">{session}</Badge>}
       />
-      <form className="space-y-4" onSubmit={handleSubmit}>
-        <div className="border border-border rounded-xl divide-y divide-border text-sm">
-          <div className="flex justify-between px-4 py-3">
-            <span className="text-text-secondary">Academic Session</span>
-            <span className="ledger-num text-text-primary">{session}</span>
-          </div>
-          <div className="flex justify-between px-4 py-3">
-            <span className="text-text-secondary">Semester</span>
-            <span className="text-text-primary">{semester}</span>
-          </div>
-          <div className="flex justify-between px-4 py-3">
-            <span className="text-text-secondary">Level</span>
-            <span className="ledger-num text-text-primary">{level}</span>
-          </div>
-          <div className="flex justify-between px-4 py-3">
-            <span className="text-text-secondary">Registration Fee</span>
-            <span className="ledger-num text-text-primary">₦{REGISTRATION_FEE.toLocaleString()}</span>
-          </div>
-          <div className="flex justify-between px-4 py-3">
-            <span className="text-text-secondary">Wallet Balance</span>
-            <span className="ledger-num text-forest">₦{walletBalance.toLocaleString()}</span>
+      <form className="space-y-5" onSubmit={handleSubmit}>
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wide text-text-secondary mb-2">Fee Breakdown</p>
+          <div className="border border-border rounded-xl divide-y divide-border text-sm">
+            {FEE_BREAKDOWN.map((f) => (
+              <div key={f.label} className="flex justify-between px-4 py-2.5">
+                <span className="text-text-secondary">{f.label}</span>
+                <span className="ledger-num text-text-primary">₦{f.amount.toLocaleString()}</span>
+              </div>
+            ))}
+            <div className="flex justify-between px-4 py-3 bg-surface-raised">
+              <span className="font-medium text-text-primary">Total</span>
+              <span className="ledger-num font-semibold text-brass">₦{REGISTRATION_FEE.toLocaleString()}</span>
+            </div>
           </div>
         </div>
+
+        <Select
+          label="Payment Method"
+          name="method"
+          value={method}
+          onChange={(e) => setMethod(e.target.value)}
+          options={PAYMENT_METHODS}
+        />
+
+        {isWallet && (
+          <div className="flex justify-between items-center px-4 py-2.5 rounded-lg bg-surface-raised text-sm">
+            <span className="text-text-secondary">Wallet Balance</span>
+            <span className={`ledger-num font-medium ${canAffordWallet ? 'text-forest' : 'text-oxblood'}`}>₦{walletBalance.toLocaleString()}</span>
+          </div>
+        )}
+
+        {isWallet && !canAffordWallet && (
+          <div className="text-sm text-oxblood flex items-center justify-between gap-2 flex-wrap">
+            <span>Insufficient wallet balance to cover this fee.</span>
+            <Button type="button" size="sm" variant="brass" onClick={onFundWallet}>Fund Wallet</Button>
+          </div>
+        )}
 
         <label className="flex items-start gap-2.5 text-sm cursor-pointer">
           <input
@@ -113,13 +135,13 @@ export default function SemesterRegistration({
             className="accent-brass w-4 h-4 mt-0.5"
           />
           <span className="text-text-secondary">
-            I confirm that the details above are correct and I authorize deduction of the registration fee from my wallet for {session}, {semester} Semester.
+            I confirm the details above are correct and authorize this payment for {session}, {semester} Semester.
           </span>
         </label>
 
         <div className="flex justify-end gap-2 pt-2">
           <Button type="button" variant="ghost" onClick={onCancel}>Cancel</Button>
-          <Button type="submit" variant="primary" disabled={!agreed}>Submit Semester Registration</Button>
+          <Button type="submit" variant="primary" disabled={!canSubmit}>Submit Semester Registration</Button>
         </div>
       </form>
     </Card>
